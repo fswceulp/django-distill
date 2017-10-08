@@ -153,7 +153,7 @@ def render_to_dir(output_dir, urls_to_distill, stdout):
                 page_uri = page_uri[1:]
             full_path = os.path.join(output_dir, page_uri)
         try:
-            content = http_response.content.decode(settings.DEFAULT_CHARSET)
+            content = http_response.content # PATCH #1 TO CORRECT UTF-8 ENCODING. -- .decode(settings.DEFAULT_CHARSET)
         except Exception as e:
             err = 'Failed to encode {} into {}: {}'
             DistillError(err.format(page_uri, settings.DEFAULT_CHARSET, e))
@@ -165,7 +165,7 @@ def render_to_dir(output_dir, urls_to_distill, stdout):
             dirname = os.path.dirname(full_path)
             if not os.path.isdir(dirname):
                 os.makedirs(dirname)
-            with open(full_path, 'w') as f:
+            with open(full_path, 'wb') as f: # PATCH #2 TO CORRECT UTF-8 ENCODING. ++ b
                 f.write(content)
         except IOError as e:
             if e.errno == errno.EISDIR:
