@@ -69,7 +69,7 @@ class Command(BaseCommand):
                 ans = 'yes'
             else:
                 ans = input('Type \'yes\' to continue, or \'no\' to cancel: ')
-            if ans.lower() == 'yes': # PATCH #3: deal with lower or upper yes
+            if ans.lower() == 'yes':
                 stdout('Recreating output directory...')
                 rmtree(output_dir)
                 os.makedirs(output_dir)

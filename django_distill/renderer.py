@@ -153,7 +153,7 @@ def render_to_dir(output_dir, urls_to_distill, stdout):
                 page_uri = page_uri[1:]
             full_path = os.path.join(output_dir, page_uri)
         try:
-            content = http_response.content # PATCH #1 TO CORRECT UTF-8 ENCODING. -- .decode(settings.DEFAULT_CHARSET)
+            content = http_response.content # .decode(settings.DEFAULT_CHARSET) # PATCH#1: utf-8 rendering correction
         except Exception as e:
             err = 'Failed to encode {} into {}: {}'
             DistillError(err.format(page_uri, settings.DEFAULT_CHARSET, e))
@@ -165,7 +165,7 @@ def render_to_dir(output_dir, urls_to_distill, stdout):
             dirname = os.path.dirname(full_path)
             if not os.path.isdir(dirname):
                 os.makedirs(dirname)
-            with open(full_path, 'wb') as f: # PATCH #2 TO CORRECT UTF-8 ENCODING. ++ b
+            with open(full_path, 'wb') as f: # PATCH#2: utf-8 rendering correction
                 f.write(content)
         except IOError as e:
             if e.errno == errno.EISDIR:
@@ -186,7 +186,7 @@ def render_to_dir(output_dir, urls_to_distill, stdout):
     media_output_dir = os.path.join(output_dir, media_url)
     for file_from, file_to in renderer.copy_static(settings.MEDIA_ROOT,
                                                    media_output_dir):
-        stdout('Copying media: {} -> {}'.format(file_from, file_to))        
+        stdout('Copying media: {} -> {}'.format(file_from, file_to))
     return True
 
 
